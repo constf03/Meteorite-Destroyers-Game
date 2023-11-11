@@ -9,9 +9,12 @@ app.use(cors())
 // convert json string to json object (from request)
 app.use(express.json())
 
-app.get('/', function(request, response){
-  response.sendFile('C:/FullStack/full-stack-harjoitustyoe/frontend/index.html');
+app.use(express.static(__dirname + '/public/'));
+
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/index.html');
 });
+
 
 // mongo here...
 const mongoose = require('mongoose')
@@ -24,10 +27,8 @@ db.once('open', function() {
   console.log("MongoDB connected")
 })
 
-// game
-
 
 // app listen port 8000
 app.listen(port, () => {
-  console.log('Example app listening on port ', port)
+  console.log('Example app listening on port http://localhost:8000')
 })
