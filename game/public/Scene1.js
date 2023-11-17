@@ -30,6 +30,11 @@ class Scene1 extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16
         });
+        this.load.spritesheet("player", "assets/spritesheets/player.png",{
+            frameWidth: 16,
+            frameHeight: 24
+        });
+
 
 
     }
@@ -37,6 +42,65 @@ class Scene1 extends Phaser.Scene {
     create() {
         this.add.text(20, 20, "Loading game...");
         this.scene.start('playGame');
+
+        //Lisätään animaatiot
+        this.anims.create({
+            key: "ship01_anim",
+            frames: this.anims.generateFrameNumbers("ship01"),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: "ship02_anim",
+            frames: this.anims.generateFrameNumbers("ship02"),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: "ship03_anim",
+            frames: this.anims.generateFrameNumbers("ship03"),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: "explode",
+            frames: this.anims.generateFrameNumbers("explosion"),
+            frameRate: 10,
+            repeat: 0,
+            hideOnComplete: true
+        });
+
+        //Määritetään powerupit
+        this.anims.create({
+            key: "red",
+            frames: this.anims.generateFrameNumbers("powerup", {
+                start: 0, // start- ja end-arvot määrittävät, minkä osan (0-3) näyttää power-up.png tiedostosta
+                end: 1
+            }),
+            frameRate: 2,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "gray",
+            frames: this.anims.generateFrameNumbers("powerup", {
+                start: 2,
+                end: 3
+            }),
+            frameRate: 2,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "player_anim",
+            frames: this.anims.generateFrameNumbers("player"),
+            frameRate: 10,
+            repeat: -1,
+        });
+
     }
     
 }

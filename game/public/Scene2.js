@@ -23,36 +23,6 @@ class Scene2 extends Phaser.Scene {
         this.ship02 = this.add.sprite(config.width/2, config.height/2, "ship02");
         this.ship03 = this.add.sprite(config.width/2 + 50, config.height/2, "ship03");
 
-        //Lisätään animaatiot
-        this.anims.create({
-            key: "ship01_anim",
-            frames: this.anims.generateFrameNumbers("ship01"),
-            frameRate: 60,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: "ship02_anim",
-            frames: this.anims.generateFrameNumbers("ship02"),
-            frameRate: 60,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: "ship03_anim",
-            frames: this.anims.generateFrameNumbers("ship03"),
-            frameRate: 60,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: "explode",
-            frames: this.anims.generateFrameNumbers("explosion"),
-            frameRate: 60,
-            repeat: 0,
-            hideOnComplete: true
-        });
-
         this.ship01.play("ship01_anim");
         this.ship02.play("ship02_anim");
         this.ship03.play("ship03_anim");
@@ -65,27 +35,6 @@ class Scene2 extends Phaser.Scene {
         //gameobjectdown --> tapahtuma käyntiin kun objektia klikataan
         //destroyShip() --> funktio (alukset tuhoutuvat, kun niitä klikataan)
         this.input.on('gameobjectdown', this.destroyShip, this);
-
-        //Määritetään powerupit
-        this.anims.create({
-            key: "red",
-            frames: this.anims.generateFrameNumbers("powerup", {
-                start: 0, // start- ja end-arvot määrittävät, minkä osan (0-3) näyttää power-up.png tiedostosta
-                end: 1
-            }),
-            frameRate: 60,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: "gray",
-            frames: this.anims.generateFrameNumbers("powerup", {
-                start: 2,
-                end: 3
-            }),
-            frameRate: 60,
-            repeat: -1
-        });
 
         this.powerUps = this.physics.add.group();
 
@@ -111,6 +60,20 @@ class Scene2 extends Phaser.Scene {
 
         }
 
+        //Pelaaja
+        this.player = this.physics.add.sprite(
+        config.width / 2 - 8,
+        config.height - 64,
+        "player");
+        
+        this.player.play("player_anim");
+
+        //Kontrollit
+        this.cursorKeys = this.input.keyboard.createCursorKeys();
+
+        this.player.setCollideWorldBounds(true); //pelaaja liikkuu vain rajojen sisällä
+        //Määritetään ampumistoiminto
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
@@ -119,8 +82,34 @@ class Scene2 extends Phaser.Scene {
         this.moveShip(this.ship03, 3);
 
         this.background.tilePositionY -= 0.5;
+
+        this.movePlayerManager();
+
+        if (Phaser.Input.Keyboard.JustDown(this.spacebar)){ //JustDown: tosi silloin, kun näppäintä painetaan 
+            this.shootBeam();
+            console.log("Player just shot.")
+        }
     }
 
+    movePlayerManager() {
+        this.player.setVelocityX(0);
+        this.player.setVelocityY(0);
+        // Liikutaan x-suunnassa:
+        if(this.cursorKeys.right.isDown){
+            this.player.setVelocityX(gameSettings.playerSpeed);
+        }
+        else if(this.cursorKeys.left.isDown){
+            this.player.setVelocityX(-gameSettings.playerSpeed);
+        }
+        //Liikutaan y-suunnassa:
+        if(this.cursorKeys.up.isDown){
+            this.player.setVelocityY(-gameSettings.playerSpeed); //Negatiivinen nopeus vie ylös??
+        }
+        else if(this.cursorKeys.down.isDown){
+            this.player.setVelocityY(gameSettings.playerSpeed); 
+        }
+            
+    }
     
     moveShip(ship, speed) {
         ship.y += speed;
@@ -139,4 +128,5 @@ class Scene2 extends Phaser.Scene {
         gameObject.setTexture("explosion"); //gameObject = ship
         gameObject.play("explode");
     }
+
 }
