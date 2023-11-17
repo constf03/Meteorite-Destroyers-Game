@@ -74,6 +74,7 @@ class Scene2 extends Phaser.Scene {
         this.player.setCollideWorldBounds(true); //pelaaja liikkuu vain rajojen sisällä
         //Määritetään ampumistoiminto
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.projectiles = this.add.group();
     }
 
     update() {
@@ -89,24 +90,41 @@ class Scene2 extends Phaser.Scene {
             this.shootBeam();
             console.log("Player just shot.")
         }
+
+        for (var i = 0; i < this.projectiles.getChildren().length; i++){
+            var beam = this.projectiles.getChildren()[i];
+            beam.update();
+        }
+    }
+
+    shootBeam() {
+        var beam = new Beam(this);
     }
 
     movePlayerManager() {
+        //Pelaajan koordinaatit (consolia varten)
+        var playerPosX = Math.round(this.player.x);
+        var playerPosY = Math.round(this.player.y);
+
         this.player.setVelocityX(0);
         this.player.setVelocityY(0);
         // Liikutaan x-suunnassa:
         if(this.cursorKeys.right.isDown){
             this.player.setVelocityX(gameSettings.playerSpeed);
+            console.log("Player position:", playerPosX, playerPosY);
         }
         else if(this.cursorKeys.left.isDown){
             this.player.setVelocityX(-gameSettings.playerSpeed);
+            console.log("Player position:", playerPosX, playerPosY);
         }
         //Liikutaan y-suunnassa:
         if(this.cursorKeys.up.isDown){
-            this.player.setVelocityY(-gameSettings.playerSpeed); //Negatiivinen nopeus vie ylös??
+            this.player.setVelocityY(-gameSettings.playerSpeed); //Negatiivinen y-suuntanen nopeus vie ylös??
+            console.log("Player position:", playerPosX, playerPosY);
         }
         else if(this.cursorKeys.down.isDown){
-            this.player.setVelocityY(gameSettings.playerSpeed); 
+            this.player.setVelocityY(gameSettings.playerSpeed);
+            console.log("Player position:", playerPosX, playerPosY);
         }
             
     }
