@@ -27,8 +27,39 @@ db.once('open', function() {
   console.log("MongoDB connected")
 })
 
+// scheema
+const hsSchema = new mongoose.Schema({
+  text: { type: String, required: true } 
+})
+
+// model
+const HighScore = mongoose.model('HighScore', hsSchema, 'highscores')
+
+// Routes here...
+
+//POST
+app.post('/highscores', async (request, response) => {
+  const { text } = request.body
+  const highscore = new HighScore({
+    text: text
+  })
+  const savedHighScore = await highscore.save()
+  response.json(savedHighScore)  
+})
+
+  //GET
+app.get('/highscores', async (request, response) => {
+  const highscores = await HighScore.find({})
+  response.json(highscores)
+})
+  //GET (by id)
+app.get('/highscores/:id', async (request, response) => {
+  const highscore = await HighScore.findById(request.params.id)
+  if (highscore) response.json(highscore)
+  else response.status(404).end()
+})
 
 // app listen port 8000
 app.listen(port, () => {
-  console.log('Example app listening on port http://localhost:8000')
+  console.log('Example app listening on http://localhost:8000')
 })

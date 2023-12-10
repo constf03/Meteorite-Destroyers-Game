@@ -7,9 +7,9 @@ var config = {
     width: 256,
     height: 272,
     backgroundColor: 0x000000,
-    scene: [Scene1, Scene2],
+    scene: [Startup, Gameplay],
     pixelArt: true,
-    //Määritetään pelin fysiikka. Arcade-preset on kevyt ja sopii pienikokoisille peleille
+    //Arcade-preset on kevyt ja sopii pienikokoisille peleille
     physics: {
         default: "arcade",
         arcade:{
