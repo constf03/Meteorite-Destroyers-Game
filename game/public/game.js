@@ -4,8 +4,8 @@ var gameSettings = {
 
 
 var config = {
-    width: 256,
-    height: 272,
+    width: 600,
+    height: 400,
     backgroundColor: 0x000000,
     scene: [Startup, Gameplay],
     pixelArt: true,

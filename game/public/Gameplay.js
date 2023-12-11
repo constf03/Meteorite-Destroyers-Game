@@ -5,7 +5,7 @@ class Gameplay extends Phaser.Scene {
 
     create() {
         //Lisätään scenen taustakuva
-        this.background = this.add.tileSprite(0,0, config.width, config.height, "background");
+        this.background = this.add.image(0,0, "sky");
         this.background.setOrigin(0,0);
 
         //Avaruusalukset (spritesheet)
@@ -17,20 +17,11 @@ class Gameplay extends Phaser.Scene {
         this.ship02.play("ship02_anim");
         this.ship03.play("ship03_anim");
 
-        //setInteractive() --> alukset ottavat vastaan hiiren inputin
-        this.ship01.setInteractive();
-        this.ship02.setInteractive();
-        this.ship03.setInteractive();
-
         //lisätään alukset enemies-ryhmään
         this.enemies = this.physics.add.group();
         this.enemies.add(this.ship01);
         this.enemies.add(this.ship02);
         this.enemies.add(this.ship03);
-
-        //gameobjectdown --> tapahtuma käyntiin kun objektia klikataan
-        //destroyShip() --> funktio (alukset tuhoutuvat, kun niitä klikataan)
-        this.input.on('gameobjectdown', this.destroyShip, this);
 
         //Pelaaja
         this.player = this.physics.add.sprite(
@@ -60,8 +51,10 @@ class Gameplay extends Phaser.Scene {
 
         //Määritetään score
         this.score = 0;
+        this.highscore = localStorage.getItem("highscore");
         this.scoreText;
         this.highscoreText;
+        this.highestscoreText;
     
         this.score = 0;
         
@@ -75,11 +68,17 @@ class Gameplay extends Phaser.Scene {
             fill: 'limegreen'
         });
 
-        this.highscoreText = this.add.text(40, 130, '', {
-            font: '30px Arial',
-            fill: 'Purple'
+        this.highscoreText = this.add.text(45, 140, '', {
+            font: '18px Arial',
+            fill: 'Yellow'
         });
         this.highscoreText.visible = false;
+
+        this.highestcoreText = this.add.text(45, 160, '', {
+            font: '18px Arial',
+            fill: 'Yellow'
+        });
+        this.highestcoreText.visible = false;
 
         //Lives
         this.lives = 5;
@@ -122,7 +121,12 @@ class Gameplay extends Phaser.Scene {
             beam.update();
         }
 
+        if (this.score > localStorage.getItem("highscore")) {
+            localStorage.setItem("highscore", this.score);
+        }
+
     }
+    
 
     ////////FUNKTIOT//////////////
 
@@ -180,20 +184,11 @@ class Gameplay extends Phaser.Scene {
         this.resetShipPos(enemy);
         this.lives -= 1;
         this.livesText.text = 'LIVES: ' + this.lives;
-        if (this.lives < 1) {
+        if (this.lives <= 0) {
             this.endGame()
         }
         var explosion = new Explosion(this, player.x, player.y);
-        this.time.addEvent({
-            delay: 2500, //ms
-            callback: this.resetPlayer(),
-            callbaskScope: this,
-            loop: false
-        });
-        if(this.player.alpha < 1){
-            return;
-        }
-        player.disableBody(true, true);
+        this.resetPlayer()
     }
 
     damageEnemy(projectile, enemy) {
@@ -208,39 +203,31 @@ class Gameplay extends Phaser.Scene {
         var x = config.width / 2 - 8;
         var y = config.height + 64;
         this.player.enableBody(true, x, y, true, true);
-        this.player.alpha = 0.5;
-        var transition = this.tweens.add({
-            targets: this.player,
-            y: config.height - 64,
-            ease: 'Power1',
-            duration: 2500,
-            repeat: false,
-            onComplete: function(){
-                this.player.alpha = 1;
-            },
-            callbackScope: this
-        });
     }
 
     endGame() {
+        if (this.score > this.highscore) {
+            addHighScoreToDB(); //Jos score on suurempi kuin aikaisempi highscore, se menee tietokantaan.
+        }
         this.gameOverText.visible = true;
-        addHighScoreToDB(); //highscore tallennetaan tietokantaan
         this.highscoreText.text = 'HIGHEST SCORE: ' + this.score;
+        this.highestcoreText.text = 'PERSONAL BEST: ' + localStorage.getItem("highscore");
         this.highscoreText.visible = true;
-
+        this.highestcoreText.visible = true;
+        game.destroy();
+        console.log("Game ended with player reaching highest score", this.score);
     }
 
 }
 
+//Tallennetaan suurin score tietokantaan
 async function addHighScoreToDB() {
-    let newHighScore = this.score;
-    const data = { 'text' : newHighScore }
+    const data = { 'text' : localStorage.getItem("highscore") };
     const response = await fetch('http://localhost:8000/highscores', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify(data)
-})
-let highscore = await response.json();
+});
 }

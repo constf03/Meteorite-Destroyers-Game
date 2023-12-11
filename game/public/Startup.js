@@ -4,7 +4,7 @@ class Startup extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("background", "assets/images/background.png");
+        this.load.image("sky", "assets/images/sky.png");
 
         this.load.spritesheet("ship01", "assets/spritesheets/ship01.png",{
             frameWidth: 16,
