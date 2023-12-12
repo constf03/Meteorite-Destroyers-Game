@@ -4,31 +4,31 @@ class Startup extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("sky", "assets/images/sky.png");
+        this.load.image("sky", "assets/images/clouds_merged_night.png");
 
-        this.load.spritesheet("ship01", "assets/spritesheets/ship01.png",{
+        this.load.image("meteor01", "assets/images/Meteor01.png",{
             frameWidth: 16,
             frameHeight: 16
         });
-        this.load.spritesheet("ship02", "assets/spritesheets/ship02.png",{
+        this.load.image("meteor02", "assets/images/Meteor02.png",{
             frameWidth: 32,
             frameHeight: 16
         });
-        this.load.spritesheet("ship03", "assets/spritesheets/ship03.png",{
+        this.load.image("meteor03", "assets/images/Meteor03.png",{
             frameWidth: 32,
             frameHeight: 32
         });
-        this.load.spritesheet("explosion", "assets/spritesheets/explosion.png",{
-            frameWidth: 16,
-            frameHeight: 16
+        this.load.spritesheet("explosion", "assets/spritesheets/explosion_new.png",{
+            frameWidth: 65,
+            frameHeight: 65
         });
-        this.load.spritesheet("player", "assets/spritesheets/player.png",{
-            frameWidth: 16,
-            frameHeight: 24
+        this.load.spritesheet("player", "assets/spritesheets/player_new2.png",{
+            frameWidth: 33,
+            frameHeight: 50
         });
-        this.load.spritesheet("beam", "assets/spritesheets/beam.png",{
+        this.load.spritesheet("missile", "assets/spritesheets/missile.png",{
             frameWidth: 16,
-            frameHeight: 16
+            frameHeight: 32
         });
 
 
@@ -40,31 +40,11 @@ class Startup extends Phaser.Scene {
         this.scene.start('playGame');
 
         //Lisätään animaatiot
-        this.anims.create({
-            key: "ship01_anim",
-            frames: this.anims.generateFrameNumbers("ship01"),
-            frameRate: 10,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: "ship02_anim",
-            frames: this.anims.generateFrameNumbers("ship02"),
-            frameRate: 10,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: "ship03_anim",
-            frames: this.anims.generateFrameNumbers("ship03"),
-            frameRate: 10,
-            repeat: -1,
-        });
 
         this.anims.create({
             key: "explode",
             frames: this.anims.generateFrameNumbers("explosion"),
-            frameRate: 10,
+            frameRate: 24,
             repeat: 0,
             hideOnComplete: true
         });
@@ -77,8 +57,8 @@ class Startup extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: "beam_anim",
-            frames: this.anims.generateFrameNumbers("beam"),
+            key: "missile_anim",
+            frames: this.anims.generateFrameNumbers("missile"),
             frameRate: 10,
             repeat: -1,
         });

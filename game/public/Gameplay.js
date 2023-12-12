@@ -9,19 +9,15 @@ class Gameplay extends Phaser.Scene {
         this.background.setOrigin(0,0);
 
         //Avaruusalukset (spritesheet)
-        this.ship01 = this.add.sprite(config.width/2 - 50, config.height/2, "ship01");
-        this.ship02 = this.add.sprite(config.width/2, config.height/2, "ship02");
-        this.ship03 = this.add.sprite(config.width/2 + 50, config.height/2, "ship03");
+        this.meteor01 = this.add.image(config.width/2 - 50, 0, "meteor01");
+        this.meteor02 = this.add.image(config.width/2, 0, "meteor02");
+        this.meteor03 = this.add.image(config.width/2 + 50, 0, "meteor03");
 
-        this.ship01.play("ship01_anim");
-        this.ship02.play("ship02_anim");
-        this.ship03.play("ship03_anim");
-
-        //lisätään alukset enemies-ryhmään
+        //lisätään putoavat meteoriitit enemies-ryhmään
         this.enemies = this.physics.add.group();
-        this.enemies.add(this.ship01);
-        this.enemies.add(this.ship02);
-        this.enemies.add(this.ship03);
+        this.enemies.add(this.meteor01);
+        this.enemies.add(this.meteor02);
+        this.enemies.add(this.meteor03);
 
         //Pelaaja
         this.player = this.physics.add.sprite(
@@ -80,7 +76,7 @@ class Gameplay extends Phaser.Scene {
         });
         this.highestcoreText.visible = false;
 
-        //Lives
+        //Elämät (lives)
         this.lives = 5;
         this.livesText;
 
@@ -89,7 +85,7 @@ class Gameplay extends Phaser.Scene {
             fill: 'ORANGE'
         });
 
-        //Loppu
+        //Lopputeksti (game over)
         this.gameOverText;
         this.gameOverText = this.add.text(40, 100, 'GAME OVER', {
             font: '30px Arial',
@@ -100,9 +96,9 @@ class Gameplay extends Phaser.Scene {
         }
 
     update() {
-        this.moveShip(this.ship01, 1);
-        this.moveShip(this.ship02, 2);
-        this.moveShip(this.ship03, 3);
+        this.moveMeteor(this.meteor01, 3);
+        this.moveMeteor(this.meteor02, 2.3);
+        this.moveMeteor(this.meteor03, 1.5);
 
         this.background.tilePositionY -= 0.5;
 
@@ -110,15 +106,15 @@ class Gameplay extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)){ //JustDown: tosi vain silloin,
             if (this.player.active){//kun välilyöntiä painetaan kerralla(eli ei togglea) 
-                this.shootBeam();           
+                this.shootMissile();           
                 console.log("Player just shot.")
             }
             
         }
 
         for (var i = 0; i < this.projectiles.getChildren().length; i++){
-            var beam = this.projectiles.getChildren()[i];
-            beam.update();
+            var missile = this.projectiles.getChildren()[i];
+            missile.update();
         }
 
         if (this.score > localStorage.getItem("highscore")) {
@@ -130,8 +126,8 @@ class Gameplay extends Phaser.Scene {
 
     ////////FUNKTIOT//////////////
 
-    shootBeam() {
-        var beam = new Beam(this);
+    shootMissile() {
+        var missile = new Missile(this);
     }
 
     movePlayerManager() {
@@ -162,26 +158,26 @@ class Gameplay extends Phaser.Scene {
             
     }
     
-    moveShip(ship, speed) {
-        ship.y += speed;
-        if (ship.y > config.height) {
-            this.resetShipPos(ship);
+    moveMeteor(meteor, speed) {
+        meteor.y += speed;
+        if (meteor.y > (config.height + 30)) {
+            this.resetMeteorPos(meteor);
         }
     }
 
-    resetShipPos(ship) {
-        ship.y = 0;
+    resetMeteorPos(meteor) {
+        meteor.y = -30;
         var randomX = Phaser.Math.Between(0, config.width);
-        ship.x = randomX;
+        meteor.x = randomX;
     }
 
-    destroyShip(pointer, gameObject) {
+    destroyMeteor(pointer, gameObject) {
         gameObject.setTexture("explosion"); //gameObject = ship
         gameObject.play("explode");
     }
 
     damagePlayer(player, enemy) {
-        this.resetShipPos(enemy);
+        this.resetMeteorPos(enemy);
         this.lives -= 1;
         this.livesText.text = 'LIVES: ' + this.lives;
         if (this.lives <= 0) {
@@ -194,7 +190,7 @@ class Gameplay extends Phaser.Scene {
     damageEnemy(projectile, enemy) {
         var explosion = new Explosion(this, enemy.x, enemy.y);
         projectile.destroy();
-        this.resetShipPos(enemy); //palautetaan hyökkäävän aluksen paikka
+        this.resetMeteorPos(enemy); //palautetaan hyökkäävän aluksen paikka
         this.score += 1;
         this.labelScore.text = this.score;
     }
