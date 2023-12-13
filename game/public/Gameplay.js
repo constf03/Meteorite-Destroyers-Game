@@ -8,10 +8,10 @@ class Gameplay extends Phaser.Scene {
         this.background = this.add.image(0,0, "sky");
         this.background.setOrigin(0,0);
 
-        //Avaruusalukset (spritesheet)
-        this.meteor01 = this.add.image(config.width/2 - 50, 0, "meteor01");
-        this.meteor02 = this.add.image(config.width/2, 0, "meteor02");
-        this.meteor03 = this.add.image(config.width/2 + 50, 0, "meteor03");
+        //Meteoriitit
+        this.meteor01 = this.add.image(Phaser.Math.Between(0, config.width), 0, "meteor01");
+        this.meteor02 = this.add.image(Phaser.Math.Between(0, config.width), 0, "meteor02");
+        this.meteor03 = this.add.image(Phaser.Math.Between(0, config.width), 0, "meteor03");
 
         //lisätään putoavat meteoriitit enemies-ryhmään
         this.enemies = this.physics.add.group();
@@ -31,18 +31,17 @@ class Gameplay extends Phaser.Scene {
         this.cursorKeys = this.input.keyboard.createCursorKeys();
 
         this.player.setCollideWorldBounds(true); //pelaaja liikkuu vain rajojen sisällä
+
         //Määritetään ampumistoiminto
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.projectiles = this.add.group();
 
-        //Vuorovaikutus objektejen kanssa
+        //Vuorovaikutus objektien kanssa (raketti)
         this.physics.add.collider(this.projectiles,
         function(projectile) {
             projectile.destroy(); 
         });
-
         this.physics.add.overlap(this.player, this.enemies, this.damagePlayer, null, this);
-
         this.physics.add.overlap(this.projectiles, this.enemies, this.damageEnemy, null, this);
 
         //Määritetään score
@@ -51,8 +50,6 @@ class Gameplay extends Phaser.Scene {
         this.scoreText;
         this.highscoreText;
         this.highestscoreText;
-    
-        this.score = 0;
         
         this.labelScore = this.add.text(70, 5, "0", { 
             font: "15px Arial",
@@ -64,13 +61,13 @@ class Gameplay extends Phaser.Scene {
             fill: 'limegreen'
         });
 
-        this.highscoreText = this.add.text(45, 140, '', {
+        this.highscoreText = this.add.text(200, 140, '', {
             font: '18px Arial',
             fill: 'Yellow'
         });
         this.highscoreText.visible = false;
 
-        this.highestcoreText = this.add.text(45, 160, '', {
+        this.highestcoreText = this.add.text(200, 160, '', {
             font: '18px Arial',
             fill: 'Yellow'
         });
@@ -80,14 +77,14 @@ class Gameplay extends Phaser.Scene {
         this.lives = 5;
         this.livesText;
 
-        this.livesText = this.add.text(190, 10, 'LIVES: ' + this.lives, {
+        this.livesText = this.add.text(510, 5, 'LIVES: ' + this.lives, {
             font: '15px Arial',
             fill: 'ORANGE'
         });
 
         //Lopputeksti (game over)
         this.gameOverText;
-        this.gameOverText = this.add.text(40, 100, 'GAME OVER', {
+        this.gameOverText = this.add.text(190, 100, 'GAME OVER', {
             font: '30px Arial',
             fill: 'red'
         });
@@ -95,7 +92,7 @@ class Gameplay extends Phaser.Scene {
 
         }
 
-    update() {
+    update() { //update-funktiossa tiedot jatkuvasti päivittyvät
         this.moveMeteor(this.meteor01, 3);
         this.moveMeteor(this.meteor02, 2.3);
         this.moveMeteor(this.meteor03, 1.5);
@@ -112,11 +109,13 @@ class Gameplay extends Phaser.Scene {
             
         }
 
+        //Luoteja eli ohjuksia voi jatkuvasti ampua
         for (var i = 0; i < this.projectiles.getChildren().length; i++){
             var missile = this.projectiles.getChildren()[i];
             missile.update();
         }
 
+        //Kun score ylittää serverin muistiin tallennetun suurimman scoren, se muuttuu highscoreksi
         if (this.score > localStorage.getItem("highscore")) {
             localStorage.setItem("highscore", this.score);
         }
@@ -158,21 +157,24 @@ class Gameplay extends Phaser.Scene {
             
     }
     
+    //Meteoriitilla on nopeutta vain y-suunassa
     moveMeteor(meteor, speed) {
         meteor.y += speed;
         if (meteor.y > (config.height + 30)) {
-            this.resetMeteorPos(meteor);
+            this.resetMeteorPos(meteor); //^Kun meteoriitti on ylittänyt pelirajan 30 yksiköllä, se palaa takaisin ylös
         }
     }
 
+    //Meteoriitit palaavat takaisin ylös, kun funktiota kutsutaan
     resetMeteorPos(meteor) {
         meteor.y = -30;
         var randomX = Phaser.Math.Between(0, config.width);
         meteor.x = randomX;
     }
 
+    //Meteoriitit tuhoutuvat, kun funktiota kutsutaan. Samalla näkyy räjähdysanimaatio
     destroyMeteor(pointer, gameObject) {
-        gameObject.setTexture("explosion"); //gameObject = ship
+        gameObject.setTexture("explosion"); //gameObject = meteor
         gameObject.play("explode");
     }
 
@@ -195,6 +197,7 @@ class Gameplay extends Phaser.Scene {
         this.labelScore.text = this.score;
     }
 
+    //Pelaaja palautuu vakiopaikalle, kun funktiota kutsutaan
     resetPlayer() {
         var x = config.width / 2 - 8;
         var y = config.height + 64;
@@ -203,20 +206,22 @@ class Gameplay extends Phaser.Scene {
 
     endGame() {
         if (this.score > this.highscore) {
-            addHighScoreToDB(); //Jos score on suurempi kuin aikaisempi highscore, se menee tietokantaan.
+            addHighScoreToDB(); //Jos highscore on suurempi kuin aikaisempi highscore, se tallentuu tietokantaan.
         }
         this.gameOverText.visible = true;
         this.highscoreText.text = 'HIGHEST SCORE: ' + this.score;
         this.highestcoreText.text = 'PERSONAL BEST: ' + localStorage.getItem("highscore");
         this.highscoreText.visible = true;
         this.highestcoreText.visible = true;
-        game.destroy();
+        game.destroy(); //Peli pysähtyy
         console.log("Game ended with player reaching highest score", this.score);
     }
 
 }
 
-//Tallennetaan suurin score tietokantaan
+//Funktio, joka tallentaa highscoren tietokantaan
+//Valitettavasti en osannut soveltaa PUT-metodia, jotta ensimmäinen tallennettu highscore päivittyisi :(
+//Tällöin tietokantaan tulee aina uusi suurin highscore, jos aikaisempi ylitetään...
 async function addHighScoreToDB() {
     const data = { 'text' : localStorage.getItem("highscore") };
     const response = await fetch('http://localhost:8000/highscores', {

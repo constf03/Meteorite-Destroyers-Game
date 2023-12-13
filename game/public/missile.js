@@ -1,6 +1,6 @@
 class Missile extends Phaser.GameObjects.Sprite{
     constructor(scene){
-        //plasmaluoti lähtee liikkeelle siitä kohdasta, jossa pelaajan koordinaatit ovat
+        //Ohjukset lähtevät liikkeelle siitä kohdasta, jossa pelaajan koordinaatit ovat (suurinpiirtein)
         var x = scene.player.x;
         var y = scene.player.y - 1;
 
@@ -14,7 +14,7 @@ class Missile extends Phaser.GameObjects.Sprite{
 
         scene.projectiles.add(this);
     }
-    //Beam-luodit tuhoutuvat, kun ne ovat liikkuneet 22 yksikköä y-suuntaan
+    //Ohjukset tuhoutuvat, kun ne ovat liikkuneet 22 yksikköä y-suuntaan
     update(){
         if(this.y < 22){
           this.destroy();
