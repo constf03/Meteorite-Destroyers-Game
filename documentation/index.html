@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,24 +10,143 @@
         margin: 2em;
         background-image: linear-gradient(to top right, rgb(0, 94, 255), skyblue,lightblue, white);
         background-attachment: fixed;
+        padding: 2em;
      }
+     a {
+            text-decoration: none;
+            color:blue
+        }
+
+        a:hover {
+            color: rgb(14, 206, 240);
+        }
+
+        a:active {
+            color: limegreen;
+        }
+    p {
+        line-height: 1.5;
+    }
     </style>
 </head>
 <body>
 
-    <h1>Dokumentaatio harjoitustyöstä</h1>
-    <h1>Full Stack -ohjelmointi TTC2080-3019</h1>
-    <h2 style="margin-left: 80%"><i>Stefano Confalone</i></h2>
-    <h2 style="margin-left: 80%"><i>AC9669</i></h2>
-    <hr>
+    <header>
+        <h1>Dokumentaatio harjoitustyöstä</h1>
+        <h1>Full Stack -ohjelmointi TTC2080-3019</h1>
+        <h2>Päivämäärä: 13.12.2023</h2>
+        <h2 style="margin-left: 80%"><i>Stefano Confalone</i></h2>
+        <h2 style="margin-left: 80%"><i>AC9669</i></h2>
+        <hr>
+    </header>
+
     <br>
 
     <section>
-        <img src="imagezz/coolposterthing.png" style="width:35%;height:35%;float:right;" alt="kuva">
+        <img src="imagezz/coolposterthing.png" style="width:35%;height:35%;float:right;padding:2em;" alt="kuva">
         <h2>Johdanto</h2>
         <p>
             Harjoitustyön tarkoituksena oli tehdä yksinkertainen, verkkoselaimella toimiva full stack -peli.
-            
+            Pelin toteuttamiseen käytettiin frontend-puolella JavaScriptia ja HTML5:ta. Backend-puolella
+            puolestaan käytettiin Node.js, Express.js ja tietokannaksi valittiin MongoDB. Erityisesti
+            frontend-puolella hyödynnettiin kurssin harjoitustyöinfossa ehdotettua JavaScript-kirjastoa
+            <a href="https://phaser.io/" target="blank">Phaser.io</a>, joka on runko HTML5-sivuilla
+            toimiville peleille.
+
+        </p>
+        <img src="imagezz/game_preview.png" style="width:50%;height:50%;" alt="kuva">
+        <p>
+            Peli on osa harjoitustyötä kurssilla Full stack -ohjelmointi TTC2080-3019 JAMKin IT-instituutissa
+            ja sen on toteuttanut Stefano Confalone.
+        </p>
+    </section>
+
+    <br>
+
+    <section>
+        <h2>Lähdekoodit ja assetit</h2>
+        <a href="https://gitlab.labranet.jamk.fi/AC9669/fullstack-harjoitustyoe" target="blank">GitLab-repositorio</a>
+        <p>
+            Kaikki pelissä käytetyt assetit (kuvat, spritet) ja lähdekoodit (frontend ja backend)
+            löytyvät repositorion kansiosta /game.
+        </p>
+        <p>
+            /game-kansiossa on pääosin backend-tiedostoja, kuten server.js ja package.json.
+            Kuitenkin sieltä löytyvä index.html on sivu, jossa peli toimii. Se sisältää linkit .js-scripteihin.
+        </p>
+        <p>
+            Samasta kansiosta löytyy kansio /public, joka sisältää
+            kaikki nämä .js-tiedostot, joilla Phaser-peli toimii.
+        </p>
+        <p>
+            Public-kansiossa /assets sisältää pelissä käytetyt
+            kuvat ja 2D-spritet. Ne on ladattu ilmaiseksi vapaakäyttöä varten sivulta
+            <a href="https://craftpix.net/" target="blank">craftpix.net</a>.
+        </p>
+    </section>
+
+    <br>
+
+    <section>
+        <h2>Pelin rakenne ja tekoprosessi</h2>
+        <h3>Toimivuus</h3>
+        <p>
+            Ohessa on lyhyt video, jossa näytetään pinnallisesti,
+            miten peli toimii ja minkälainen yhteys on frontendin ja backendin välillä.
+        </p>
+        <video width="720" height="480" controls>
+            <source src="game.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <h3>Suunnittelu ja toteutus</h3>
+        <p>
+            Alussa oli selkeää se, että oli tarkoitus tehdä pelimuotoinen JavaScript-sovellus hyödyntäen
+            kurssilla ehdotettua Phaser-kirjastoa. Myös toteutukseen tarvittavat ohjelmistot ja kielet olivat
+            valittu: frontend-puolella HTML5 ja JavaScript (Phaser.io) ja Backend-puolella
+            Node.js, Express.js ja MongoDB. Koska Phaser ei ollut vielä tuttu osuus alkuvaiheessa,
+            ei ollut täysin selvää, minkälainen peli pitäisi toteuttaa tarkalleen. Ainoa näkemys oli, että
+            tehdään yksinkertainen peli, jossa voidaan kerätä pisteitä ja pisteet tallentuvat tietokantaan
+            jollain tavalla.
+        </p>
+        <p>
+            Mutta sitä mukaan kun opeteltiin Phaserin käyttöä useamman tutoriaalin avulla, kuten luokkien käyttöönottoa,
+            sprite-animaatioita ja Phaser-kirjaston funktioita ja syntaksia, ja yhdistettiin opittuja asioita
+            kurssilla opeteltuihin asioihin, alkoi muodostumaan ideoita aina lisää. Lopputulokseksi
+            saatiin peli, jossa tuhotaan meteoriitteja raketteja ampuvalla
+            aluksella saadakseen pisteitä, ja suurin palvelilla oleva pistemäärä tallentuu tietokantaan.
+            Suunnittelu oli siis jossain määrin samankaltaista kuin ketterissä projekteissa eli se tapahtui 
+            toteutuksen ohella, jos voidaan sanoa.
+        </p>
+        <h3>Rakenne</h3>
+        <p>
+            Oheeseen kuvioon on määritelty graafisesti, minkälainen suhde on frontendin luokkien ja backendin
+            kanssa.
+        </p>
+        <img src="imagezz/rakenne.png" style="width:50%;height:50%" alt="kuva">
+        <p>
+            Phaser-peleissä pyritään käyttämään erillisiä .js-tiedostoja, jotka ovat game.js-tiedostoa
+            lukuunottamatta luokkia.
+            game.js toimii konfiguraationa pelille ja se sitoaa peliin "scenet" eli luokat, joita peli tarvitsee
+            käynnistymiseen ja itse pelaamiseen. Konfiguraatiossa määritetään myös pelin resoluutio, pelaajan
+            nopeus ja physics preset, joka on tässä pelissä "arcade"-preset.
+        </p>
+        <p>
+            Startup.js on luokka, joka lataa valmiiksi kaikki pelissä tarvittavat kuvat, spritet ja
+            spritejen animaatiot funktion preload() sisällä. Funktion create() sisälle on määritetty,
+            miten spritejen animaatiot toimivat. Animoituja spritejä ovat muun muassa pelaaja (alus), 
+            ohjus ja räjähdys, joka näkyy kun ohjus osuu meteoriittiin tai meteoriitti pelaajaan.
+        </p>
+        <p>
+            Gameplay.js-luokka on puolestaan suurin kokonaisuus, koska siihen on määritetty, miten peli toimii.
+            Siihen on koodattu funktioineen muun muassa pelaajan liikkuminen nuolinäppäimillä, ohjusten
+            ampuminen välilyönnillä, meteoriittien putoaminen, tekstit, elämät, pelin loppu ja paljon muuta.  
+            Lisäksi se sisältää asynkronisen funktion addHighScoreToDB(), jolla saadaan tallennettua suurin
+            pelaajan score MongoDB:n highscores-taulukkoon POST-metodilla. Score tallentuu vain, jos se on suurempi
+            kuin aiempi suurin score. Luokka toimii siis myös yhteytenä frontendin ja backendin välillä.
+        </p>
+        <p>
+            explosion.js ja missile.js ovat nimensä mukaisesti pienempiä luokkia, joita tarvitaan pelissä
+            tapahtuviin räjähdyksiin ja ohjusten ampumiseen.
         </p>
     </section>
     
