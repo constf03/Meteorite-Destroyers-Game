@@ -98,6 +98,11 @@
             <source src="game.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+        <p>
+            Videosta nähdään, että peli toimii localhost-osoitteessa ja viimeisin ennätys-score oli 14 pistettä.
+            Kun seuraavalla pelikerralla ylitettiin arvo ennätys-scoreen 16 pistettä, havaitaan, että uusi score siirtyy
+            MongoDB-tietokannan highscores-taulukkoon.
+        </p>
         <h3>Suunnittelu ja toteutus</h3>
         <p>
             Alussa oli selkeää se, että oli tarkoitus tehdä pelimuotoinen JavaScript-sovellus hyödyntäen
@@ -113,7 +118,7 @@
             sprite-animaatioita ja Phaser-kirjaston funktioita ja syntaksia, ja yhdistettiin opittuja asioita
             kurssilla opeteltuihin asioihin, alkoi muodostumaan ideoita aina lisää. Lopputulokseksi
             saatiin peli, jossa tuhotaan meteoriitteja raketteja ampuvalla
-            aluksella saadakseen pisteitä, ja suurin palvelilla oleva pistemäärä tallentuu tietokantaan.
+            aluksella saadakseen pisteitä, ja suurin palvelilla oleva pistemäärä (ennätys) tallentuu tietokantaan.
             Suunnittelu oli siis jossain määrin samankaltaista kuin ketterissä projekteissa eli se tapahtui 
             toteutuksen ohella, jos voidaan sanoa.
         </p>
@@ -140,13 +145,31 @@
             Gameplay.js-luokka on puolestaan suurin kokonaisuus, koska siihen on määritetty, miten peli toimii.
             Siihen on koodattu funktioineen muun muassa pelaajan liikkuminen nuolinäppäimillä, ohjusten
             ampuminen välilyönnillä, meteoriittien putoaminen, tekstit, elämät, pelin loppu ja paljon muuta.  
-            Lisäksi se sisältää asynkronisen funktion addHighScoreToDB(), jolla saadaan tallennettua suurin
-            pelaajan score MongoDB:n highscores-taulukkoon POST-metodilla. Score tallentuu vain, jos se on suurempi
-            kuin aiempi suurin score. Luokka toimii siis myös yhteytenä frontendin ja backendin välillä.
+            Lisäksi se sisältää asynkronisen funktion addHighScoreToDB(), jolla saadaan tallennettua 
+            ennätys-score MongoDB:n highscores-taulukkoon POST-metodilla.
+            Ennätys-score tallentuu tietokantaan ensimmäisellä pelikerralla (alkuarvo 0) riippumatta pelaajan
+            scoresta, ja jos pelaaja ylittää arvon seuraavilla pelikerroilla, tallentuu aina uusi
+            ennätys-score tietokantaan. Ehkä olisi ollut parempi idea solveltaa myös PUT-metodia sen sijaan,
+            että lisätään jatkuvasti aina uusi ennätys tietokantaan, mutta sen implementointi todettiin
+            olevan hankalaa toistaiseksi.
         </p>
         <p>
             explosion.js ja missile.js ovat nimensä mukaisesti pienempiä luokkia, joita tarvitaan pelissä
             tapahtuviin räjähdyksiin ja ohjusten ampumiseen.
+        </p>
+        <h3>Tehtävät</h3>
+        <p>Harjoitustyön tärkeimmät tehtävät olivat:</p>
+            
+                <p>- Palvelimen ja tietokannan pystyyn asetus (backend)</p>
+                <p>- Phaser-kirjaston käyttöönotto (phaser.min.js)</p>
+                <p>- Frontend-puolen työstäminen eli pelin tekeminen</p>
+                <p>- Toiminto, jolla saadaan ennätys-score tallentumaan tietokantaan (POST.rest)</p>
+                <p>- Pelin dokumentaatio</p>
+        
+        <h3>Ajan käyttö</h3>
+        <p>
+            Koko harjoitustyö tehtiin yhden opiskelijan voimalla. Harjoitustyötä työstettiin joka viikko
+            pääosin torstaisin ja perjantaisin välillä 1.11.2023-14.12.2023.
         </p>
     </section>
     
