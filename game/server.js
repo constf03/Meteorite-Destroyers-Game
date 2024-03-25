@@ -11,12 +11,11 @@ app.use(express.json())
 
 app.use(express.static('public'));
 
-
 app.get('/', function (req, res) {
   res.sendFile('./public/index.html');
 });
 
-// app listen port 8000
+// app listen port 3000
 app.listen(port, () => {
   console.log(`Meteorite Destroyers listening on http://localhost:${port}`)
 })
