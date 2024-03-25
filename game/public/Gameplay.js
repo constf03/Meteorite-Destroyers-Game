@@ -219,12 +219,10 @@ class Gameplay extends Phaser.Scene {
 
 }
 
-//Funktio, joka tallentaa highscoren tietokantaan
-//Valitettavasti en osannut soveltaa PUT-metodia, jotta ensimmäinen tallennettu highscore päivittyisi :(
-//Tällöin tietokantaan tulee aina uusi suurin highscore, jos aikaisempi ylitetään...
+// Save highscore to database
 async function addHighScoreToDB() {
-    const data = { 'hs' : localStorage.getItem("highscore") };
-    const response = await fetch('http://127.0.0.1:3000/highscores', {
+    const data = { highscore : localStorage.getItem("highscore") };
+    const response = await fetch('http://localhost:3000/highscores', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'

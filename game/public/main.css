@@ -1,0 +1,27 @@
+body {
+   text-align: center;
+   font-family: Arial, Helvetica, sans-serif;
+   margin: 0;
+   background-image: linear-gradient(to top right, rgb(0, 94, 255), skyblue,lightblue, white);
+   background-attachment: fixed;
+ }
+
+ header {
+   padding: 2em;
+ }
+
+ #playgamebutton {
+   display:block;
+   width: 100px;
+   height: 35px;
+ }
+
+ #exit {
+   display: block;
+   width: 100px;
+   height: 35px;
+ }
+
+#menu {
+   margin-left: 45%;
+ }
