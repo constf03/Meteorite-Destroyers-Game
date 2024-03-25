@@ -27,4 +27,6 @@ npm install
 3. Run development environment with Node.js
 ```
 npm run dev
+
+//Game server will run on http://localhost:3000
 ```
