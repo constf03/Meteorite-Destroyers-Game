@@ -22,7 +22,7 @@ app.listen(port, () => {
 
 // MongoDB
 const mongoose = require('mongoose')
-const mongoDB = 'mongodb+srv://ac9669:salasana@democluster2.vsyignr.mongodb.net/?retryWrites=true&w=majority'
+const mongoDB = 'MONGODB CONNECTION STRING HERE'
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true})
 
 const db = mongoose.connection
