@@ -1,14 +1,11 @@
 body {
    text-align: center;
    font-family: Arial, Helvetica, sans-serif;
-   margin: 0;
+   margin: 2em;
    background-image: linear-gradient(to top right, rgb(0, 94, 255), skyblue,lightblue, white);
    background-attachment: fixed;
  }
 
- header {
-   padding: 2em;
- }
 
  #playgamebutton {
    display:block;
@@ -30,4 +27,24 @@ body {
 
 #menu {
    margin-left: 45%;
+ }
+
+#highscores {
+  text-align: center;
+  background: linear-gradient(to top right, rgb(0, 94, 255), skyblue,lightblue, white);
+  padding: 1em;
+  max-width: 200px;
+  margin: auto;
+  margin-top: 45px;
+  border-radius: 6px;
+  border: 1px solid black;
+  box-shadow: 0px 0px 15px 1px black;
+  overflow: auto;
+  height: 250px;
+}
+
+ #highscoreList {
+  list-style: none;
+  display: inline-block;
+  margin-left: -35px;
  }
