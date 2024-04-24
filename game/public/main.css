@@ -16,6 +16,12 @@ body {
    height: 35px;
  }
 
+ #leaderboardbutton {
+  display:block;
+  width: 100px;
+  height: 35px;
+}
+
  #exit {
    display: block;
    width: 100px;
