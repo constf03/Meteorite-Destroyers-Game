@@ -1,42 +1,63 @@
 body {
-   text-align: center;
-   font-family: Arial, Helvetica, sans-serif;
-   margin: 2em;
-   background-image: linear-gradient(to top right, rgb(0, 94, 255), skyblue,lightblue, white);
-   background-attachment: fixed;
- }
-
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 2em;
+  background-image: linear-gradient(
+    to top right,
+    rgb(0, 94, 255),
+    skyblue,
+    lightblue,
+    white
+  );
+  background-attachment: fixed;
+}
 
 .commonbutton {
   border: 1px solid black;
-  border-radius:6px;
-  background: linear-gradient(to top, rgb(0, 94, 255), skyblue,lightblue);
+  border-radius: 6px;
+  background: linear-gradient(to top, rgb(0, 94, 255), skyblue, lightblue);
   background-repeat: no-repeat;
-  box-shadow: 0px 0px 10px .5px black;
-  display:block;
+  box-shadow: 0px 0px 10px 0.5px black;
+  display: block;
   width: 100px;
   height: 35px;
   margin: auto;
- }
+}
 
- .commonbutton:hover {
-  background: linear-gradient(to top, rgb(0, 94, 255), rgb(179, 221, 238),white);
+.commonbutton:hover {
+  background: linear-gradient(
+    to top,
+    rgb(0, 94, 255),
+    rgb(179, 221, 238),
+    white
+  );
   background-repeat: no-repeat;
   box-shadow: 0px 0px 15px 1px black;
- }
+}
 
- .commonbutton:active {
-  background: linear-gradient(to top, rgb(11, 51, 120), rgb(70, 110, 126),rgb(120, 120, 120));
+.commonbutton:active {
+  background: linear-gradient(
+    to top,
+    rgb(11, 51, 120),
+    rgb(70, 110, 126),
+    rgb(120, 120, 120)
+  );
   box-shadow: 0px 0px 20px 1px black;
- }
+}
 
 #menu {
-   margin:auto;
- }
+  margin: auto;
+}
 
 #highscores {
   text-align: center;
-  background: linear-gradient(to top right, rgb(0, 94, 255), skyblue,lightblue, white);
+  background: linear-gradient(
+    to top right,
+    rgb(0, 94, 255),
+    skyblue,
+    lightblue,
+    white
+  );
   padding: 1em;
   max-width: 200px;
   margin: auto;
@@ -48,7 +69,7 @@ body {
   height: 250px;
 }
 
- #highscoreList {
+#highscoreList {
   display: inline-block;
   margin-left: -35px;
- }
+}
